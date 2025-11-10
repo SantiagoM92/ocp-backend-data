@@ -10,9 +10,6 @@ service:
   port: 80
   targetPort: 8080
 
-config:
-  externalUsersBaseUrl: http://localhost:8081
-
 resources:
   limits:
     cpu: 500m

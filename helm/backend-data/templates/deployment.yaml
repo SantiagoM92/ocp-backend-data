@@ -23,12 +23,6 @@ spec:
           ports:
             - name: http
               containerPort: {{ .Values.service.targetPort }}
-          env:
-            - name: EXTERNAL_USERS_BASE_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: {{ include "backend-data.configMapName" . }}
-                  key: EXTERNAL_USERS_BASE_URL
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}

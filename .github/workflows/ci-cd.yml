@@ -104,15 +104,8 @@ jobs:
           oc project "${OPENSHIFT_NAMESPACE}"
 
       - name: Deploy Helm release
-        env:
-          EXTERNAL_USERS_BASE_URL: ${{ secrets.EXTERNAL_USERS_BASE_URL }}
         run: |
-          if [ -z "${EXTERNAL_USERS_BASE_URL}" ]; then
-            echo "Secret EXTERNAL_USERS_BASE_URL must be provided" >&2
-            exit 1
-          fi
           helm upgrade --install "${RELEASE_NAME}" "${CHART_PATH}" \
             --namespace "${OPENSHIFT_NAMESPACE}" \
             --set image.repository="${IMAGE_REPOSITORY}" \
-            --set image.tag="${IMAGE_TAG}" \
-            --set config.externalUsersBaseUrl="${EXTERNAL_USERS_BASE_URL}"
+            --set image.tag="${IMAGE_TAG}"

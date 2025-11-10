@@ -27,7 +27,3 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 app.kubernetes.io/name: {{ include "backend-data.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}
-
-{{- define "backend-data.configMapName" -}}
-{{- printf "%s-config" (include "backend-data.fullname" .) | trunc 63 | trimSuffix "-" -}}
-{{- end -}}
