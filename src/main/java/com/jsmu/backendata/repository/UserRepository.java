@@ -11,7 +11,7 @@ public class UserRepository {
 
     private static final String QUERY = """
             SELECT username
-            FROM "user"
+            FROM "users"
             WHERE LOWER(username) LIKE :pattern
             ORDER BY username
             """;
