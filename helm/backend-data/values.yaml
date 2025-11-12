@@ -5,6 +5,15 @@ image:
   tag: "latest"
   pullPolicy: IfNotPresent
 
+database:
+  secretName: ""
+  existingSecret: ""
+  host: "postgres"
+  port: "5432"
+  name: "backend"
+  username: "backend_user"
+  password: "change_me"
+
 service:
   type: ClusterIP
   port: 80

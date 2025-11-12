@@ -27,3 +27,13 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 app.kubernetes.io/name: {{ include "backend-data.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}
+
+{{- define "backend-data.databaseSecretName" -}}
+{{- if .Values.database.existingSecret -}}
+{{- .Values.database.existingSecret -}}
+{{- else if .Values.database.secretName -}}
+{{- .Values.database.secretName -}}
+{{- else -}}
+{{- printf "%s-db" (include "backend-data.fullname" .) -}}
+{{- end -}}
+{{- end -}}

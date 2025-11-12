@@ -104,8 +104,25 @@ jobs:
           oc project "${OPENSHIFT_NAMESPACE}"
 
       - name: Deploy Helm release
+        env:
+          POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
+          POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
         run: |
+          for var in POSTGRES_HOST POSTGRES_PORT POSTGRES_DB POSTGRES_USER POSTGRES_PASSWORD; do
+            if [ -z "${!var}" ]; then
+              echo "Database secret $var must be provided" >&2
+              exit 1
+            fi
+          done
           helm upgrade --install "${RELEASE_NAME}" "${CHART_PATH}" \
             --namespace "${OPENSHIFT_NAMESPACE}" \
             --set image.repository="${IMAGE_REPOSITORY}" \
-            --set image.tag="${IMAGE_TAG}"
+            --set image.tag="${IMAGE_TAG}" \
+            --set-string database.host="${POSTGRES_HOST}" \
+            --set-string database.port="${POSTGRES_PORT}" \
+            --set-string database.name="${POSTGRES_DB}" \
+            --set-string database.username="${POSTGRES_USER}" \
+            --set-string database.password="${POSTGRES_PASSWORD}"
